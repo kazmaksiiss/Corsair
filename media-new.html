@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Медіа - CORSAIR</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath fill='%2300d4ff' d='M 30 170 L 60 30 L 90 70 L 140 20 L 120 110 L 170 60 L 150 140 L 120 160 L 100 180 L 30 170 Z'/%3E%3C/svg%3E">
+</head>
+    <style>
+        .media-container {
+            max-width: 1400px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .media-section {
+            margin-bottom: 80px;
+        }
+
+        .media-section h2 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .media-section p {
+            color: #aaa;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        /* PDF Slideshow */
+        .pdf-slideshow {
+            position: relative;
+            background: #1a1d2e;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .pdf-viewer {
+            width: 100%;
+            height: 600px;
+            background: #fff;
+        }
+
+        .pdf-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .pdf-controls button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            color: #0a0e27;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pdf-controls button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,212,255,0.4);
+        }
+
+        .pdf-controls button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-info {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Video Section */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .video-card {
+            background: #1a1d2e;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,212,255,0.3);
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 */
+            background: #000;
+        }
+
+        .video-wrapper iframe, .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-info {
+            padding: 20px;
+        }
+
+        .video-info h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .video-info p {
+            font-size: 14px;
+            color: #aaa;
+            margin: 0;
+        }
+
+        /* Infographic Section */
+        .infographic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .infographic-card {
+            background: #1a1d2e;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .infographic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,212,255,0.3);
+        }
+
+        .infographic-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+        }
+
+        .infographic-info {
+            padding: 20px;
+        }
+
+        .infographic-info h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .infographic-info p {
+            font-size: 14px;
+            color: #aaa;
+            margin: 0;
+        }
+
+        .upload-area {
+            border: 2px dashed #00d4ff;
+            border-radius: 15px;
+            padding: 60px 30px;
+            text-align: center;
+            background: rgba(0,212,255,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            background: rgba(0,212,255,0.1);
+        }
+
+        .upload-area p {
+            color: #00d4ff;
+            font-size: 18px;
+            margin: 0;
+        }
+
+        /* Modal для перегляду інфографіки */
+        .infographic-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .infographic-modal.active {
+            display: flex;
+        }
+
+        .infographic-modal-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .infographic-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .pdf-viewer {
+                height: 400px;
+            }
+
+            .video-grid, .infographic-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка сайту -->
+    <header id="header">
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="45" height="45" class="logo-svg">
+                        <defs>
+                            <style>
+                                @keyframes drawLogo {
+                                    0%, 100% { stroke-dashoffset: 1000; }
+                                    50% { stroke-dashoffset: 0; }
+                                }
+                                .logo-path {
+                                    fill: none;
+                                    stroke: #00d4ff;
+                                    stroke-width: 4;
+                                    stroke-linecap: round;
+                                    stroke-linejoin: round;
+                                    stroke-dasharray: 1000;
+                                    stroke-dashoffset: 1000;
+                                    animation: drawLogo 4s ease-in-out infinite;
+                                    filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));
+                                }
+                                .logo-fill {
+                                    fill: url(#logoGradient);
+                                    opacity: 0.15;
+                                }
+                            </style>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#0099ff;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <path class="logo-fill" d="M 30 170 L 60 30 L 90 70 L 140 20 L 120 110 L 170 60 L 150 140 L 120 160 L 100 180 L 30 170 Z"/>
+                        <path class="logo-path" d="M 30 170 L 60 30 L 90 70 L 140 20 L 120 110 L 170 60 L 150 140 L 120 160 L 100 180 L 30 170 Z"/>
+                    </svg>
+                    <span class="logo-text">CORSAIR</span>
+                </a>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Головна</a></li>
+                <li><a href="about.html">Про нас</a></li>
+                <li><a href="products-new.html">Продукція</a></li>
+                <li><a href="media-new.html" class="active">Медіа</a></li>
+                <li><a href="contact.html">Контакти</a></li>
+                <li><a href="cart.html" class="cart-link">
+                    <span class="cart-icon">🛒</span>
+                    <span class="cart-text">Кошик</span>
+                    <span class="cart-badge" id="cartCount">0</span>
+                </a></li>
+            </ul>
+            <div class="burger" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <div class="media-container">
+        <!-- Презентація -->
+        <div class="media-section">
+            <h2>📊 Презентація CORSAIR</h2>
+            <p>Детальна презентація наших технологій охолодження та продуктової лінійки</p>
+            
+            <div class="pdf-slideshow">
+                <iframe id="pdfViewer" class="pdf-viewer" src="presentation-slides.pdf#page=1"></iframe>
+                <div class="pdf-controls">
+                    <button id="prevPage">← Попередній</button>
+                    <span class="page-info">Сторінка <span id="currentPage">1</span> з <span id="totalPages">10</span></span>
+                    <button id="nextPage">Наступний →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Відео -->
+       <div class="media-section">
+    <h2>🎥 Українські відеоогляди CORSAIR та охолодження ПК</h2>
+    <p>Огляди, порівняння та інструкції українською про системи охолодження та компоненти CORSAIR</p>
+    
+    <div class="video-grid">
+
+        <!-- Root Nation: Corsair iCUE LINK TITAN 360 RX LCD -->
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/hOYmF1GgA2c" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="video-info">
+                <h3>Огляд Corsair iCUE LINK TITAN 360 RX LCD</h3>
+                <p>Український огляд потужної системи водяного охолодження CORSAIR</p>
+            </div>
+        </div>
+
+        <!-- Тест комплекту охолодження -->
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/CqvbSYCsAYI" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="video-info">
+                <h3>Великий тест кулерів 2025</h3>
+                <p>Порівняння кулерів для ПК — як вибрати охолодження</p>
+            </div>
+        </div>
+
+        <!-- Збірка з CORSAIR -->
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/D8wyjdWtpRM" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="video-info">
+                <h3>Тест корпусу та водянки CORSAIR</h3>
+                <p>Збірка ПК з охолодженням CORSAIR i9 + RTX 3080 Ti</p>
+            </div>
+        </div>
+
+        <!-- Твоє відео -->
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/Q-izAaJj3yk" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="video-info">
+                <h3>Мій огляд продуктів CORSAIR</h3>
+                <p>Особистий огляд та досвід з CORSAIR</p>
+            </div>
+        </div>
+
+        <!-- Інше українське відео (не про Corsair, але про кулер) -->
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/nNOxPP_dK6E" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="video-info">
+                <h3>Огляд кулера для ПК</h3>
+                <p>Український огляд кулера PcCooler GI-X3</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+        <!-- Інфографіка -->
+        <div class="media-section">
+            <h2>📈 Інфографіка та діаграми</h2>
+            <p>Наочні схеми, порівняння та технічні діаграми</p>
+            
+            <div class="infographic-grid">
+                <div class="infographic-card" onclick="openInfographic('https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800')">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400" alt="Інфографіка 1" class="infographic-image">
+                    <div class="infographic-info">
+                        <h3>Порівняння продуктивності</h3>
+                        <p>Діаграма порівняння різних систем охолодження</p>
+                    </div>
+                </div>
+
+                <div class="infographic-card" onclick="openInfographic('https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800')">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400" alt="Інфографіка 2" class="infographic-image">
+                    <div class="infographic-info">
+                        <h3>Технічні характеристики</h3>
+                        <p>Детальна схема компонентів системи охолодження</p>
+                    </div>
+                </div>
+
+                <div class="infographic-card" onclick="openInfographic('https://images.unsplash.com/photo-1543286386-713bdd548da4?w=800')">
+                    <img src="https://images.unsplash.com/photo-1543286386-713bdd548da4?w=400" alt="Інфографіка 3" class="infographic-image">
+                    <div class="infographic-info">
+                        <h3>Процес встановлення</h3>
+                        <p>Покрокова інфографіка встановлення</p>
+                    </div>
+                </div>
+
+                <!-- Місце для додавання своєї інфографіки -->
+                <div class="infographic-card" onclick="openInfographic('corsair-infographic.png')">
+    <img 
+        src="corsair-infographic.png" 
+        alt="Інфографіка: Обладнання для охолодження ПК Corsair" 
+        class="infographic-image"
+    >
+    <div class="infographic-info">
+        <h3>Обладнання для охолодження ПК</h3>
+        <p>Інфографіка компонентів охолодження від Corsair</p>
+    </div>
+</div>
+
+            </div>
+        </div>
+
+        <!-- Каталог -->
+        <div class="media-section">
+            <h2>📚 Каталог продукції PDF</h2>
+            <p>Завантажте повний каталог наших продуктів у форматі PDF</p>
+            
+            <div class="pdf-slideshow">
+                <iframe id="brochureViewer" class="pdf-viewer" src="brochure.pdf" style="height: 700px;"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальне вікно для інфографіки -->
+    <div id="infographicModal" class="infographic-modal">
+        <span class="infographic-modal-close" onclick="closeInfographic()">&times;</span>
+        <img id="infographicModalImage" class="infographic-modal-content" src="" alt="Інфографіка">
+    </div>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>CORSAIR</h4>
+                    <p>Провідний виробник систем охолодження для ПК. Інновації, якість, надійність з 2010 року.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Навігація</h4>
+                    <ul>
+                        <li><a href="index.html">Головна</a></li>
+                        <li><a href="products-new.html">Продукція</a></li>
+                        <li><a href="about.html">Про нас</a></li>
+                        <li><a href="contact.html">Контакти</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 CORSAIR. Всі права захищені.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="cart.js"></script>
+    <script>
+        // PDF Slideshow контроль
+        let currentPage = 1;
+        const totalPages = 10; // Кількість сторінок у презентації
+
+        document.getElementById('prevPage').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                updatePDF();
+            }
+        });
+
+        document.getElementById('nextPage').addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updatePDF();
+            }
+        });
+
+        function updatePDF() {
+            document.getElementById('pdfViewer').src = `presentation-slides.pdf#page=${currentPage}`;
+            document.getElementById('currentPage').textContent = currentPage;
+            
+            // Оновлюємо стан кнопок
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = currentPage === totalPages;
+        }
+
+        // Ініціалізація
+        updatePDF();
+
+        // Функції для інфографіки
+        function openInfographic(imageSrc) {
+            document.getElementById('infographicModalImage').src = imageSrc;
+            document.getElementById('infographicModal').classList.add('active');
+        }
+
+        function closeInfographic() {
+            document.getElementById('infographicModal').classList.remove('active');
+        }
+
+        // Закриття модального вікна по кліку поза зображенням
+        document.getElementById('infographicModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('infographicModal')) {
+                closeInfographic();
+            }
+        });
+
+        // Закриття по Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeInfographic();
+            }
+        });
+    </script>
+</body>
+</html>

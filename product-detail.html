@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Деталі товару - CORSAIR</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath fill='%2300d4ff' d='M 30 170 L 60 30 L 90 70 L 140 20 L 120 110 L 170 60 L 150 140 L 120 160 L 100 180 L 30 170 Z'/%3E%3C/svg%3E">
+</head>
+    <style>
+        .product-detail-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+
+        .product-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        .product-gallery {
+            position: sticky;
+            top: 100px;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .thumbnail {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .thumbnail:hover {
+            border-color: #00d4ff;
+            transform: scale(1.05);
+        }
+
+        .thumbnail.active {
+            border-color: #00d4ff;
+        }
+
+        .product-info {
+            padding: 20px 0;
+        }
+
+        .product-category {
+            color: #00d4ff;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .product-title {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .product-price {
+            font-size: 36px;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 30px;
+        }
+
+        .product-description {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+
+        .product-specs, .product-features {
+            margin-bottom: 30px;
+        }
+
+        .product-specs h3, .product-features h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .spec-list, .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .spec-list li {
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            margin-bottom: 8px;
+            border-radius: 8px;
+            border-left: 3px solid #00d4ff;
+        }
+
+        .feature-list li {
+            padding: 12px 12px 12px 35px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 10px;
+            color: #00d4ff;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .purchase-section {
+            background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(0,153,255,0.1));
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .quantity-selector button {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #00d4ff;
+            background: transparent;
+            color: #00d4ff;
+            font-size: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-selector button:hover {
+            background: #00d4ff;
+            color: #0a0e27;
+        }
+
+        .quantity-selector input {
+            width: 60px;
+            text-align: center;
+            font-size: 18px;
+            padding: 10px;
+            border: 2px solid #00d4ff;
+            background: transparent;
+            color: #fff;
+            border-radius: 8px;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 18px;
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            color: #0a0e27;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .add-to-cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(0,212,255,0.4);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .product-detail-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .product-gallery {
+                position: static;
+            }
+
+            .main-image {
+                height: 350px;
+            }
+
+            .product-title {
+                font-size: 32px;
+            }
+
+            .product-price {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка сайту -->
+    <header id="header">
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="45" height="45" class="logo-svg">
+                        <defs>
+                            <style>
+                                @keyframes drawLogo {
+                                    0%, 100% { stroke-dashoffset: 1000; }
+                                    50% { stroke-dashoffset: 0; }
+                                }
+                                .logo-path {
+                                    fill: none;
+                                    stroke: #00d4ff;
+                                    stroke-width: 4;
+                                    stroke-linecap: round;
+                                    stroke-linejoin: round;
+                                    stroke-dasharray: 1000;
+                                    stroke-dashoffset: 1000;
+                                    animation: drawLogo 4s ease-in-out infinite;
+                                    filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));
+                                }
+                                .logo-fill {
+                                    fill: url(#logoGradient);
+                                    opacity: 0.15;
+                                }
+                            </style>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#0099ff;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <path class="logo-fill" d="M 30 170 L 60 30 L 90 70 L 140 20 L 120 110 L 170 60 L 150 140 L 120 160 L 100 180 L 30 170 Z"/>
+                        <path class="logo-path" d="M 30 170 L 60 30 L 90 70 L 140 20 L 120 110 L 170 60 L 150 140 L 120 160 L 100 180 L 30 170 Z"/>
+                    </svg>
+                    <span class="logo-text">CORSAIR</span>
+                </a>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Головна</a></li>
+                <li><a href="about.html">Про нас</a></li>
+                <li><a href="products-new.html" class="active">Продукція</a></li>
+                <li><a href="media-new.html">Медіа</a></li>
+                <li><a href="contact.html">Контакти</a></li>
+                <li><a href="cart.html" class="cart-link">
+                    <span class="cart-icon">🛒</span>
+                    <span class="cart-text">Кошик</span>
+                    <span class="cart-badge" id="cartCount">0</span>
+                </a></li>
+            </ul>
+            <div class="burger" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <div class="product-detail-container">
+        <a href="products-new.html" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Назад до продукції
+        </a>
+
+        <div id="productDetail"></div>
+    </div>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>CORSAIR</h4>
+                    <p>Провідний виробник систем охолодження для ПК. Інновації, якість, надійність з 2010 року.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Навігація</h4>
+                    <ul>
+                        <li><a href="index.html">Головна</a></li>
+                        <li><a href="products-new.html">Продукція</a></li>
+                        <li><a href="about.html">Про нас</a></li>
+                        <li><a href="contact.html">Контакти</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 CORSAIR. Всі права захищені.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="products-data.js"></script>
+    <script src="cart.js"></script>
+    <script>
+        // Отримуємо ID продукту з URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = parseInt(urlParams.get('id'));
+
+        // Знаходимо продукт
+        const product = products.find(p => p.id === productId);
+
+        if (product) {
+            displayProduct(product);
+        } else {
+            document.getElementById('productDetail').innerHTML = '<p>Товар не знайдено</p>';
+        }
+
+        function displayProduct(product) {
+            const mainImage = product.images && product.images.length > 0 ? product.images[0] : product.image;
+            const thumbnails = product.images && product.images.length > 0 ? product.images : [product.image];
+
+            const html = `
+                <div class="product-detail-grid">
+                    <div class="product-gallery">
+                        <img src="${mainImage}" alt="${product.name}" class="main-image" id="mainImage">
+                        <div class="thumbnail-grid">
+                            ${thumbnails.map((img, index) => `
+                                <img src="${img}" alt="${product.name} ${index + 1}" 
+                                     class="thumbnail ${index === 0 ? 'active' : ''}" 
+                                     onclick="changeMainImage('${img}', this)">
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="product-info">
+                        <div class="product-category">${product.category}</div>
+                        <h1 class="product-title">${product.name}</h1>
+                        <div class="product-price">${product.price.toLocaleString('uk-UA')} грн</div>
+                        
+                        <p class="product-description">${product.fullDescription || product.description}</p>
+
+                        <div class="product-specs">
+                            <h3>Технічні характеристики</h3>
+                            <ul class="spec-list">
+                                ${product.specs.map(spec => `<li>${spec}</li>`).join('')}
+                            </ul>
+                        </div>
+
+                        ${product.features ? `
+                            <div class="product-features">
+                                <h3>Переваги</h3>
+                                <ul class="feature-list">
+                                    ${product.features.map(feature => `<li>${feature}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+
+                        <div class="purchase-section">
+                            <div class="quantity-selector">
+                                <button onclick="decreaseQuantity()">-</button>
+                                <input type="number" id="quantity" value="1" min="1" max="10" readonly>
+                                <button onclick="increaseQuantity()">+</button>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addProductToCart()">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="9" cy="21" r="1"/>
+                                    <circle cx="20" cy="21" r="1"/>
+                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                                </svg>
+                                Додати в кошик
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('productDetail').innerHTML = html;
+        }
+
+        function changeMainImage(imageSrc, thumbnail) {
+            document.getElementById('mainImage').src = imageSrc;
+            document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+            thumbnail.classList.add('active');
+        }
+
+        function decreaseQuantity() {
+            const input = document.getElementById('quantity');
+            if (input.value > 1) {
+                input.value = parseInt(input.value) - 1;
+            }
+        }
+
+        function increaseQuantity() {
+            const input = document.getElementById('quantity');
+            if (input.value < 10) {
+                input.value = parseInt(input.value) + 1;
+            }
+        }
+
+        function addProductToCart() {
+            const quantity = parseInt(document.getElementById('quantity').value);
+            addToCart(productId, quantity);
+            alert(`${product.name} додано в кошик (${quantity} шт.)`);
+        }
+
+        // Оновлюємо лічильник кошика
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+        });
+    </script>
+</body>
+</html>
